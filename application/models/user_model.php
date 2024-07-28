@@ -27,20 +27,46 @@ Class user_model extends CI_Model {
     }
 
     function doAlter($dados, $conta_id) {
-        $this->db->set('first_name', $dados[first_name]);
-        $this->db->set('last_name', $dados[name]);
-        $this->db->set('document', $dados[name]);
-        $this->db->set('email', $dados[name]);
-        $this->db->set('phone_number', $dados[name]);
-        $this->db->set('birth_date', $dados[name]);
-        $this->db->set('updated_at', date('Y-m-d '));
-        
+        $this->db->set('first_name', $dados['first_name']);
+        $this->db->set('last_name', $dados['last_name']);
+        $this->db->set('document', $dados['document']);
+        $this->db->set('phone_number', $dados['phone_number']);
+        $this->db->set('birth_date', $dados['birth_date']);
+        $this->db->set('updated_at', date('Y-m-d H:i:s'));
+
         if ($dados['password'] != '') {
             $this->db->set('password', md5($dados['password']));
-        } 
-        
-        $this->db->where('id', $conta_id);
+        }
+
+        $this->db->where('id', (int) $conta_id);
         return $this->db->update('user');
+    }
+
+    function doRegister($dados, $conta_id) {
+        $data = array(
+            'first_name' => $dados['first_name'],
+            'last_name' => $dados['last_name'],
+            'document' => $dados['document'],
+            'email' => $dados['email'],
+            'phone_number' => $dados['phone_number'],
+            'birth_date' => $dados['birth_date'],
+            'password' => md5($dados['password']),
+            'created_at' => date('Y-m-d H:i:s'),
+        );
+        
+        return $this->db->insert('user', $data);
+    }
+
+    function listing() {
+        $this->db->select('id, first_name, last_name, document, email, phone_number, birth_date, created_at, updated_at');
+        $this->db->from('user');
+        $this->db->order_by('id', 'desc');
+        return $this->db->get()->result();
+    }
+
+    function delete($id) {
+        $this->db->where('id', $id);
+        return $this->db->delete('user');
     }
 
 }

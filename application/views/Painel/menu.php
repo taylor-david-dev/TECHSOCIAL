@@ -27,10 +27,10 @@
                             </a>
                             <ul class="nav nav-second-level">
                                 <li>
-                                    <a href="<?php echo base_url(); ?>genero/cadastrar">Cadastrar</a>
+                                    <a href="<?php echo base_url(); ?>user/register">Cadastrar</a>
                                 </li>
                                 <li>
-                                    <a href="<?php echo base_url(); ?>genero/listar">Listar</a>
+                                    <a href="<?php echo base_url(); ?>user/listing">Listar</a>
                                 </li>
                             </ul>
                         </li>
