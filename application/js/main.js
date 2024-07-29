@@ -2,7 +2,7 @@ $("#user_name").keyup(function () {
     $.ajax({
         crossDomain: true,
         type: "POST",
-        url: "../user/doPesquisaAjax",
+        url: "https://taylordavid.com.br/techsocial/user/doPesquisaAjax",
         data: {name: $("#user_name").val()},
         cache: false,
         success: function (data) {

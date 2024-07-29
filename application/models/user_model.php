@@ -26,7 +26,7 @@ Class user_model extends CI_Model {
         return $this->db->get()->result()[0];
     }
 
-    function doAlter($dados, $conta_id) {
+    function doAlter($dados) {
         $this->db->set('first_name', $dados['first_name']);
         $this->db->set('last_name', $dados['last_name']);
         $this->db->set('document', $dados['document']);
@@ -38,7 +38,7 @@ Class user_model extends CI_Model {
             $this->db->set('password', md5($dados['password']));
         }
 
-        $this->db->where('id', (int) $conta_id);
+        $this->db->where('id', (int) $dados['id']);
         return $this->db->update('user');
     }
 

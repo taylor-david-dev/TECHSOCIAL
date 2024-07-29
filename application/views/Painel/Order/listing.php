@@ -46,7 +46,7 @@
                                 }
                                 ?>
                                 <tr class="<?php echo $cor; ?>">
-                                    <td><?php echo $list->user_id ?></td>
+                                    <td><?php echo $list->first_name ?> <?php echo $list->last_name ?></td>
                                     <td><?php echo $list->description ?></td>
                                     <td><?php echo $list->quantity ?></td>
                                     <td><?php echo $list->price ?></td>
@@ -67,7 +67,7 @@
                                         }
                                     ?></td>
                                     <td>
-                                        <a href="<?php echo base_url(); ?>order/alterar/<?php echo $list->id ?>" class="btn btn-info btn-circle"><i class="fa fa-list"></i></a>
+                                        <a href="<?php echo base_url(); ?>order/alter/<?php echo $list->id ?>" class="btn btn-info btn-circle"><i class="fa fa-list"></i></a>
                                         <a href="javascript:confirma('<?php echo base_url(); ?>order/delete/<?php echo $list->id ?>');" target="_self" class="btn btn-danger btn-circle"><i class="fa fa-times"></i></a>
                                     </td>
                                 </tr>
@@ -87,12 +87,6 @@
 <script language="javascript">
     function confirma(url) {
         if (confirm("Confirma Operação?")) {
-            document.location.href = url;
-        }
-    }
-
-    function confirmaPayment(url) {
-        if (confirm("Confirma Pagamento?")) {
             document.location.href = url;
         }
     }

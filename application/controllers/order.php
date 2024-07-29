@@ -83,30 +83,25 @@ class Order extends CI_Controller {
         }
     }
 
-    function alterar() {
-        $this->load->model('lancamento_model', '', TRUE);
-        $data['user'] = $this->session->userdata('logged_in');
-        $data['vCliente'] = $this->lancamento_model->alterar($this->uri->segment(3), $this->conta_id);
-        $data['view'] = 'Painel/Lancamento/alterar';
+    function alter() {
+        $this->load->model('order_model', '', TRUE);
+        $data['vList'] = $this->order_model->alter($this->uri->segment(3));
+        $data['view'] = 'Painel/Order/alter';
         $this->load->view('Painel/index', $data);
     }
 
-    function doAlterar() {
-        $this->load->model('lancamento_model', '', TRUE);
-        $data['user'] = $this->session->userdata('logged_in');
-        $_POST['valor'] = str_replace(array(".", ","), array("", "."), $_POST['valor']);
-        if ($this->lancamento_model->doAlterar($_POST, $this->conta_id)) {
-
-            $data['view'] = 'Painel/Lancamento/listar';
-            $data['valida'] = 'trueAlterado';
-            $data['vLista'] = $this->lancamento_model->listar($this->conta_id);
-            $this->load->view('Painel/index', $data);
+    function doAlter() {
+        $this->load->model('order_model', '', TRUE);
+        $_POST['price'] = str_replace(array(".", ","), array("", "."), $_POST['price']);
+        if ($this->order_model->doAlter($_POST)) {
+            $this->mensagem->setMensagem("Alteração efetuada com sucesso!");
         } else {
-            $data['valida'] = 'false';
-            $data['vLista'] = $this->lancamento_model->listar($this->conta_id);
-            $data['view'] = 'Painel/Lancamento/listar';
-            $this->load->view('Painel/index', $data);
+            $this->mensagem->setMensagem("Erro ao Alterar!\\nPor favor, tente novamente.");
         }
+        
+        $this->mensagem->setUrl("order/listing");
+        $this->mensagem->alerta();
+        exit;
     }
 
 }
