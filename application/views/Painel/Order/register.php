@@ -3,7 +3,7 @@
         <ol class="breadcrumb text-xs">
             <li><a href="<?php echo base_url(); ?>home">Home</a>
             </li>
-            <li><a href="#">Turmas</a>
+            <li><a href="#">Pedidos</a>
             </li>
             <li class="active">Cadastrar</li>
         </ol>
@@ -14,7 +14,7 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h4 class="margin-none">
-                    <i class="fa fa-th fa-fw"></i> Cadastro de Turma
+                    <i class="fa fa-th fa-fw"></i> Cadastro de Pedido
                 </h4>
                 <!-- <p class="margin-none text-xs text-muted">Default bootstrap form
                         elements</p> -->
@@ -22,18 +22,26 @@
             <div class="panel-body">
                 <div class="row">
                     <div class="col-lg-12">
-                        <form role="form" method="post" action="<?php echo base_url(); ?>turma/doCadastrar" enctype="multipart/form-data">
+                        <form role="form" method="post" action="<?php echo base_url(); ?>order/doRegister" enctype="multipart/form-data">
                             <div class="form-group">
-                                <label>Nome :</label> <input class="form-control" name="nome" placeholder="Nome">
+                                <label>Selecione o Usuário :</label> 
+                                <input class="form-control cur" readonly="readonly" data-toggle="modal" data-target="#myModal" id="user_id_1" name="user_id_1" placeholder="Abrir janela de usuários">
+                                <input type="hidden" id="user_id" class="form-control" name="user_id">
                             </div>
+                            
                             <div class="form-group">
-                                <label>Inicio :</label> <input class="form-control date" name="inicio" value="<?php echo date('d/m/Y') ?> 10:00" id="datetimepicker_mask" placeholder="Data / Hora">
+                                <label>Quantidade :</label> <input class="form-control" name="quantity" placeholder="0" type="number" >
                             </div>
+                            
                             <div class="form-group">
-                                <label>Adicionar Gênero :</label> <button type="button" data-toggle="modal" data-target="#myModal" class="btn btn-info btn-circle"><i class="fa fa-check"></i></button>
+                                <label>Valor :</label> <input class="form-control" name="price" placeholder="R$" onKeyPress="tamanhoTeste(this, event)" onKeyDown="backspace(this, event)" >
                             </div>
-                            <div id="lista_genero">
+                            
+                            <div class="form-group">
+                                <label>Descrição :</label> <input class="form-control" name="description" placeholder="Desc">
                             </div>
+                            
+                            
                             <div class="possition-btn-form">
                                 <button type="submit" class="btn btn-danger">Enviar</button>
                                 <button type="reset" class="btn btn-default">Resetar</button>
@@ -56,11 +64,11 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title text-center">Busca - Tipos de Gêneros</h4>
+                <h4 class="modal-title text-center">Busca - Usuários</h4>
             </div>
             <div class="modal-body">
                 <div class="form-group">
-                    <label>Informe o Código do Gênero :</label> <input class="form-control" id="cod_genero" name="cod_genero" placeholder="Cod. Gênero">
+                    <label>Informe o Nome do usuário :</label> <input class="form-control" id="user_name" name="user_name" placeholder="">
                 </div>
                 <hr>
 
@@ -70,11 +78,11 @@
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th>Cod</th>
                                 <th>Nome</th>
+                                <th>Sobrenome</th>
                             </tr>
                         </thead>
-                        <tbody id="result_genero">
+                        <tbody id="result_user">
 
                         </tbody>
                     </table>

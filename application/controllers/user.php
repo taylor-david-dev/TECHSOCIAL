@@ -107,4 +107,9 @@ class User extends CI_Controller {
         exit;
     }
     
+    
+    function doPesquisaAjax() {
+        $this->load->model('user_model', '', TRUE);
+        echo $this->user_model->doPesquisaAjax($_POST);
+    }
 }

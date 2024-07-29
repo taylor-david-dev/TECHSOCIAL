@@ -4,9 +4,9 @@ if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 session_start(); //we need to call PHP's session object to access it through CI
 
-class Lancamento extends CI_Controller {
+class Order extends CI_Controller {
 
-    private $conta_id;
+    private $user_id;
 
     function __construct() {
         parent::__construct();
@@ -18,7 +18,9 @@ class Lancamento extends CI_Controller {
             redirect('login', 'refresh');
         }
         
-        $this->conta_id = $this->session->userdata('logged_in')['id'];
+        $this->user_id = $this->session->userdata('logged_in')['id'];
+        
+        $this->load->library("Mensagem");
     }
 
     function index() {
@@ -34,50 +36,35 @@ class Lancamento extends CI_Controller {
         $session_data = $this->session->userdata('logged_in');
     }
 
-    function cadastrar() {
+    function register() {
         $data['user'] = $this->session->userdata('logged_in');
-        $data['view'] = 'Painel/Lancamento/cadastrar';
+        $data['view'] = 'Painel/Order/register';
         $this->load->view('Painel/index', $data);
     }
 
-    function doCadastrar() {
+    function doRegister() {
+        $this->load->model('order_model', '', TRUE);
+        $_POST['price'] = str_replace(array(".", ","), array("", "."), $_POST['price']);
 
-        //print_r($_FILES);exit;
-        $this->load->model('lancamento_model', '', TRUE);
-        $data['user'] = $this->session->userdata('logged_in');
-        $_POST['valor'] = str_replace(array(".", ","), array("", "."), $_POST['valor']);
-
-        //print_r($_POST);exit;
-        if ($this->lancamento_model->cadastrar($_POST, $this->conta_id)) {
-            $data['view'] = 'Painel/Lancamento/listar';
-            $data['valida'] = 'true';
-            $data['vLista'] = $this->lancamento_model->listar($this->conta_id);
-            $this->load->view('Painel/index', $data);
+        if ($this->order_model->register($_POST)) {
+            $this->mensagem->setMensagem("Cadastro efetuado com sucesso!");
         } else {
-            $data['valida'] = 'false';
-            $data['vLista'] = $this->lancamento_model->listar($this->conta_id);
-            $data['view'] = 'Painel/Lancamento/listar';
-            $this->load->view('Painel/index', $data);
+            $this->mensagem->setMensagem("Erro ao Cadastrar!\\nPor favor, tente novamente.");
         }
+        
+        $this->mensagem->setUrl("order/listing");
+        $this->mensagem->alerta();
+        exit;
     }
 
-    function listar() {
-        $this->load->model('lancamento_model', '', TRUE);
+    function listing() {
+        $this->load->model('order_model', '', TRUE);
         $data['user'] = $this->session->userdata('logged_in');
-        $data['valida'] = '';
-        $data['vLista'] = $this->lancamento_model->listar($this->conta_id);
-        $data['view'] = 'Painel/Lancamento/listar';
+        $data['vList'] = $this->order_model->listing();
+        $data['view'] = 'Painel/Order/listing';
         $this->load->view('Painel/index', $data);
     }
 
-    function doPesquisar() {
-        $this->load->model('lancamento_model', '', TRUE);
-        $data['user'] = $this->session->userdata('logged_in');
-        $data['valida'] = '';
-        $data['vLista'] = $this->lancamento_model->doPesquisar($_POST, $this->conta_id);
-        $data['view'] = 'Painel/Lancamento/listar';
-        $this->load->view('Painel/index', $data);
-    }
 
     function excluir() {
         $this->load->model('lancamento_model', '', TRUE);
@@ -85,23 +72,6 @@ class Lancamento extends CI_Controller {
 
         if ($this->lancamento_model->excluir($this->uri->segment(3), $this->conta_id)) {
             $data['valida'] = 'trueExcluir';
-            $data['vLista'] = $this->lancamento_model->listar($this->conta_id);
-            $data['view'] = 'Painel/Lancamento/listar';
-            $this->load->view('Painel/index', $data);
-        } else {
-            $data['valida'] = 'false';
-            $data['vLista'] = $this->lancamento_model->listar($this->conta_id);
-            $data['view'] = 'Painel/Lancamento/listar';
-            $this->load->view('Painel/index', $data);
-        }
-    }
-
-    function pagamento() {
-        $this->load->model('lancamento_model', '', TRUE);
-        $data['user'] = $this->session->userdata('logged_in');
-
-        if ($this->lancamento_model->payment($this->uri->segment(3), $this->conta_id)) {
-            $data['valida'] = 'truePago';
             $data['vLista'] = $this->lancamento_model->listar($this->conta_id);
             $data['view'] = 'Painel/Lancamento/listar';
             $this->load->view('Painel/index', $data);
@@ -140,5 +110,3 @@ class Lancamento extends CI_Controller {
     }
 
 }
-
-?>

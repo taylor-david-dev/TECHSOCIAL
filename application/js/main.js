@@ -1,92 +1,15 @@
-$("#cod_genero").keyup(function () {
+$("#user_name").keyup(function () {
     $.ajax({
         crossDomain: true,
         type: "POST",
-        url: "../genero/doPesquisaGeneroAjax",
-        data: {cod: $("#cod_genero").val()},
+        url: "../user/doPesquisaAjax",
+        data: {name: $("#user_name").val()},
         cache: false,
         success: function (data) {
-            $('#result_genero').html(data);
+            $('#result_user').html(data);
         }
     });
 });
-
-$("#cod_banco2").keyup(function () {
-    $.ajax({
-        crossDomain: true,
-        type: "POST",
-        url: "../conta/doPesquisaBancoAjax",
-        data: {cod: $("#cod_banco2").val()},
-        cache: false,
-        success: function (data) {
-            $('#result_banco').html(data);
-        }
-    });
-});
-
-$("#cod_genero2").keyup(function () {
-    $.ajax({
-        crossDomain: true,
-        type: "POST",
-        url: "../genero/doPesquisaGeneroAjax2",
-        data: {cod: $("#cod_genero2").val()},
-        cache: false,
-        success: function (data) {
-            $('#result_genero').html(data);
-        }
-    });
-});
-
-$("#cod_servico").keyup(function () {
-    $.ajax({
-        crossDomain: true,
-        type: "POST",
-        url: "http://localhost/code/index.php/servico/doPesquisaServicoAjax",
-        data: {cod: $("#cod_servico").val()},
-        cache: false,
-        success: function (data) {
-            $('#result_service').html(data);
-        }
-    });
-});
-
-$("#nome_cliente_busca").keyup(function () {
-    $.ajax({
-        crossDomain: true,
-        type: "POST",
-        url: "http://localhost/code/index.php/cliente/doPesquisaClienteAjax",
-        data: {nome: $("#nome_cliente_busca").val()},
-        cache: false,
-        success: function (data) {
-            $('#result_client').html(data);
-        }
-    });
-});
-
-
-$("#valida_casal_conta").click(function () {
-    if( $("#valida_casal_conta").is(":checked") == true ){
-    //if ($(this).attr("checked") == "checked") {
-        $('#nome_alternativo').fadeIn();
-        $('#cpf_alternativo').fadeIn();
-    }else{
-       $('#nome_alternativo').fadeOut(); 
-       $('#cpf_alternativo').fadeOut(); 
-    }
-});
-
-
-$(".addMusica").click(function () {
-    var bkp = $('#lista_musica').html();
-    var html = '';
-    html += '<div class="form-group">'+
-                '<label>Selecione o arquivo</label>'+
-                '<input name="musica[]" type=file multiple>'+
-            '</div>';
-    $('#lista_musica').html(bkp+html);
-    console.log(html);
-});
-
 $('#datetimepicker_mask').datetimepicker({
     mask: '99/19/9999'
 });
@@ -96,63 +19,19 @@ $('.adatetimepicker_mask').datetimepicker({
 
 var lista_genero = "";
 
-function pegaValorTRGeneroAjax(linha) {
+function pegaValorTRUserAjax(linha) {
 
     $(linha).each(function () {
-        $('#servico_id').val($(this.cells[0]).text());
-        $('#nome_servico').val($(this.cells[2]).text());
-        lista_genero += '<div class="form-group" id="excluir_'+$(this.cells[0]).text()+'" onclick="excluir_genero('+$(this.cells[0]).text()+')">'+
-                                '<label>Gênero:</label>'+
-                                '<input class="form-control" name="" disabled="disabled" value="'+$(this.cells[2]).text()+'">'+
-                                '<input class="form-control" type="hidden" name="lista_genero[]" value="'+$(this.cells[0]).text()+'">'+
-                        '</div>'; 
-        
-    });
-    $('#lista_genero').html(lista_genero);
-    $('#myModal').modal('toggle');
-    //alert($(this).find('td').eq(1).html())
-}
-
-
-function pegaValorTRGeneroAjax2(linha) {
-
-    $(linha).each(function () {
-        $('#genero_id').val($(this.cells[0]).text());
-        $('#genero_id_1').val($(this.cells[2]).text());
+        $('#user_id').val($(this.cells[0]).text());
+        $('#user_id_1').val($(this.cells[1]).text());
     });
     
-    $('#genero_id').val();
+    $('#user_id').val();
     
     $('#myModal').modal('toggle');
     //alert($(this).find('td').eq(1).html())
 }
 
-
-function pegaValorTRBancoAjax(linha) {
-
-    $(linha).each(function () {
-        $('#banco_id').val($(this.cells[0]).text());
-        $('#banco_id_1').val($(this.cells[1]).text());
-    });
-    
-    $('#banco_id').val();
-    
-    $('#myModal1').modal('toggle');
-    //alert($(this).find('td').eq(1).html())
-}
-
-
-
-function pegaValorTRClienteAjax(linha) {
-
-    $(linha).each(function () {
-        $('#cliente_id').val($(this.cells[0]).text());
-        $('#nome_cliente').val($(this.cells[1]).text());
-    });
-
-    $('#myModalCliente').modal('toggle');
-    //alert($(this).find('td').eq(1).html())
-}
 function excluir_genero(linha) {
     if(confirm("Deseja realmente excluir?!")){
         $("#excluir_"+linha).remove();
