@@ -66,21 +66,17 @@ class Order extends CI_Controller {
     }
 
 
-    function excluir() {
-        $this->load->model('lancamento_model', '', TRUE);
-        $data['user'] = $this->session->userdata('logged_in');
-
-        if ($this->lancamento_model->excluir($this->uri->segment(3), $this->conta_id)) {
-            $data['valida'] = 'trueExcluir';
-            $data['vLista'] = $this->lancamento_model->listar($this->conta_id);
-            $data['view'] = 'Painel/Lancamento/listar';
-            $this->load->view('Painel/index', $data);
+    function delete() {
+        $this->load->model('order_model', '', TRUE);
+        if ($this->order_model->delete($this->uri->segment(3))) {
+            $this->mensagem->setMensagem("Exclusão efetuada com sucesso!");
         } else {
-            $data['valida'] = 'false';
-            $data['vLista'] = $this->lancamento_model->listar($this->conta_id);
-            $data['view'] = 'Painel/Lancamento/listar';
-            $this->load->view('Painel/index', $data);
+            $this->mensagem->setMensagem("Erro ao Excluir!\\nPor favor, tente novamente.");
         }
+        
+        $this->mensagem->setUrl("order/listing");
+        $this->mensagem->alerta();
+        exit;
     }
 
     function alter() {

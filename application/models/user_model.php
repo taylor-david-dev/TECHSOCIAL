@@ -3,7 +3,7 @@
 Class user_model extends CI_Model {
 
     function login($username, $password) {
-        $this->db->select('id, email, password, name');
+        $this->db->select('id, email, password');
         $this->db->from('user');
         $this->db->where('email', $username);
         $this->db->where('password', MD5($password));
@@ -53,7 +53,7 @@ Class user_model extends CI_Model {
             'password' => md5($dados['password']),
             'created_at' => date('Y-m-d H:i:s'),
         );
-        
+
         return $this->db->insert('user', $data);
     }
 
@@ -68,20 +68,19 @@ Class user_model extends CI_Model {
         $this->db->where('id', $id);
         return $this->db->delete('user');
     }
-    
-    
-    function doPesquisaAjax($dados){
-            $html = '';
-            $result = $this->db->query("SELECT * FROM user WHERE first_name like '%$dados[name]%'");
-            foreach ($result->result() as $row){
-                    $html .= '<tr onClick="pegaValorTRUserAjax(this)" style="cursor:pointer;">';
-                    $html .= '<td>'.$row->id.'</td>';
-                    $html .= '<td>'.$row->first_name.'</td>';
-                    $html .= '<td>'.$row->last_name.'</td>';
-                    $html .= '</tr>';
-            }
 
-            return $html;
+    function doPesquisaAjax($dados) {
+        $html = '';
+        $result = $this->db->query("SELECT * FROM user WHERE first_name like '%$dados[name]%'");
+        foreach ($result->result() as $row) {
+            $html .= '<tr onClick="pegaValorTRUserAjax(this)" style="cursor:pointer;">';
+            $html .= '<td>' . $row->id . '</td>';
+            $html .= '<td>' . $row->first_name . '</td>';
+            $html .= '<td>' . $row->last_name . '</td>';
+            $html .= '</tr>';
+        }
+
+        return $html;
     }
 
 }

@@ -32,7 +32,7 @@ Class order_model extends CI_Model {
         return $this->db->get()->result();
     }
 
-    function excluir($id, $conta_id) {
+    function delete($id) {
         $this->db->where('id', $id);
         return $this->db->delete('order');
     }
@@ -45,12 +45,4 @@ Class order_model extends CI_Model {
         return $this->db->get()->result()[0];
     }
 
-    function doAlterar($dados, $conta_id) {
-        $dataVencimento = explode(" ", $dados['dataHora_mensalidade']);
-        $dataLancamento = implode("-", array_reverse(explode("/", $dataVencimento[0])));
-        return $this->db->query("UPDATE lancamento SET nome='$dados[nome]', valor='$dados[valor]', lan_status=$dados[lan_status], data_vencimento='$dataLancamento' WHERE id=$dados[id] and conta_id = $conta_id");
-    }
-
 }
-
-?>
